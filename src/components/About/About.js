@@ -5,7 +5,9 @@ import './About.css'
 
 const About = () => {
   const { name, role, description, social } = about
-  const resume = '/Final_Resume__fullStack.pdf'
+  // const resume = '/Final_Resume__fullStack.pdf'
+  const resume =
+    'https://surajlokesh.github.io/portfolio/Final_Resume__fullStack.pdf'
 
   return (
     <div className='about center'>
