@@ -1,0 +1,42 @@
+.experience__card {
+  padding: 2em;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s linear;
+  /* background: var(--clr-bg-alt); */
+  color: var(--clr-fg);
+  border-radius: 8px;
+}
+
+.experience__card:hover {
+  transform: translateY(-7px);
+}
+
+.experience__company {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.experience__years {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+/* Tech Stack */
+.experience__stack {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 1.2em 0;
+}
+
+.experience__stack-item {
+  margin: 0.5em;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--clr-fg-alt);
+}

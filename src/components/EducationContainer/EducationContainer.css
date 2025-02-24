@@ -1,0 +1,42 @@
+.education__card {
+  padding: 2em;
+  margin: 1.5rem auto; /* Add vertical margin */
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s linear;
+  background: var(--clr-bg-alt);
+  color: var(--clr-fg);
+  border-radius: 8px;
+}
+
+.education__card:hover {
+  transform: translateY(-7px);
+}
+
+.education__institution {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.education__years {
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+/* Courses List */
+.education__courses {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.education__courses-item {
+  margin: 0.5em;
+  font-weight: 500;
+  font-size: 0.8rem;
+  color: var(--clr-fg-alt);
+}

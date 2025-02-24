@@ -4,6 +4,6 @@
 
 .contact__info {
   font-size: 1.2rem;
-  color: white;
+  color: var(--clr-primary);
   margin-top: 10px;
 }

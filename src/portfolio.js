@@ -13,7 +13,7 @@ const about = {
   resume: 'https://example.com',
   social: {
     linkedin: 'https://www.linkedin.com/in/surajlokesh/',
-    github: 'https://github.com/surajlokesh?tab=repositories',
+    github: 'https://github.com/surajlokesh',
   },
 }
 
@@ -61,6 +61,32 @@ const skills = [
   'CI/CD',
   'Microservices',
   'RESTful APIs',
+  'Adobe Photshop',
+]
+
+// Add your experiences
+const experience = [
+  {
+    title: 'Software Developer Intern',
+    company: 'Lid Vizion, LLC',
+    years: '2024 - Present',
+    mainTech: ['Python', 'TensorFlow', 'React'],
+    technologies: ['Machine Learning', '3D Object Generation', 'Meshy API'],
+  },
+  {
+    title: 'Software Engineer',
+    company: 'Evive Health',
+    years: '2021 - 2022',
+    mainTech: ['Java', 'Spring Boot', 'AWS'],
+    technologies: ['Microservices', 'DynamoDB', 'Docker', 'React', 'CI/CD'],
+  },
+  {
+    title: 'Software Engineer Intern',
+    company: 'Evive Health',
+    years: '2021 - 2022',
+    mainTech: ['Java', 'Spring Boot', 'AWS'],
+    technologies: ['Microservices', 'DynamoDB', 'Docker', 'React', 'CI/CD'],
+  },
 ]
 
 const contact = {
@@ -69,4 +95,33 @@ const contact = {
   phone: '+1 305-464-0283',
 }
 
-export { header, about, projects, skills, contact }
+const education = [
+  {
+    degree: 'Master of Science in Computer Science',
+    school: 'Florida International University',
+    years: '2022 - 2024',
+    courses: [
+      'Algorithms',
+      'Data Structures',
+      'Machine Learning',
+      'Advance Data Science',
+      'Principles of Data Analysis',
+      'Operating Systems',
+    ],
+  },
+  {
+    degree: 'Bachelor of Engineering in Computer Science',
+    school: 'Siddaganga Institute of Technology',
+    years: '2017 - 2021',
+    courses: [
+      'Software Engineering',
+      'Databases',
+      'Operating Systems',
+      'Algorithms',
+      'Database',
+      'Java',
+    ],
+  },
+]
+
+export { header, about, projects, skills, contact, experience, education }
