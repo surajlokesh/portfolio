@@ -21,6 +21,14 @@ const projects = [
   // projects can be added an removed
   // if there are no projects, Projects section won't show up
   {
+    name: 'Resume Analysis using OPEN AI API',
+    description:
+      'Resume analysis to check the if the resume matches job description',
+    stack: ['Java', 'Spring boot', 'React', 'TypeScript', 'OPEN AI API'],
+    sourceCode: 'https://github.com/surajlokesh/Resume_Analyser',
+    livePreview: 'https://github.com',
+  },
+  {
     name: 'F1-App (Ongoing)',
     description:
       'This is my latest project, where I am working on building an F1 data analytics platform.',
