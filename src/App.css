@@ -1,152 +1,773 @@
+/* ==========================================================================
+   Pit wall — a portfolio with the manners of a timing screen.
+
+   The borrowed grammar is structural, never verbal: tabular numerals, a shared
+   year axis, stint bars, one live row. Every label stays plain English, so a
+   reader who has never watched a race loses nothing.
+
+   Colour carries exactly one meaning, the same meaning everywhere:
+     purple = running now      green = delivered      steel = history
+   ========================================================================== */
+
 .app {
-  font-family: 'Poppins', sans-serif;
-  line-height: 1.5;
-  color: var(--clr-fg);
-  background-color: var(--clr-bg);
+  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --cond: 'IBM Plex Sans Condensed', 'IBM Plex Sans', system-ui, sans-serif;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+
+  --gutter: clamp(1.15rem, 4vw, 4.5rem);
+  --bar-h: 3.25rem;
+  --idx-w: 2.75rem;
+  --period-w: 8.5rem;
+  --track-w: 19rem;
+
+  font-family: var(--sans);
+  font-size: 100%;
+  line-height: 1.55;
+  background-color: var(--glass);
+  color: var(--text);
 }
 
-.light {
-  --clr-bg: #fcfcfc;
-  --clr-bg-alt: #fff;
-  --clr-fg: #555;
-  --clr-fg-alt: #444;
-  --clr-primary: #2978b5;
-  --shadow: rgba(125, 125, 133, 0.2) 0px 7px 29px 0px;
+/* The instrument, lit */
+.app--dark {
+  --housing: #14161c;
+  --glass: #0b0d12;
+  --glass-2: #111520;
+  --edge: rgba(230, 233, 239, 0.11);
+  --edge-soft: rgba(230, 233, 239, 0.055);
+  --text: #e6e9ef;
+  --dim: #79839a;
+  --steel: #4a5872;
+  --purple: #b62cd6;
+  --green: #2fd07a;
+  --glow: rgba(182, 44, 214, 0.35);
 }
 
-.dark {
-  --clr-bg: #1b1b1b;
-  --clr-bg-alt: #2a2538;
-  --clr-fg: #bdbddd;
-  --clr-fg-alt: #cdcdff;
-  --clr-primary: #fefefe;
-  --shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
-    rgba(39, 39, 39, 0.06) 0px 0px 0px 1px;
+/* The same data, printed: a trackside timing sheet rather than the screen */
+.app--light {
+  --housing: #e6e6e2;
+  --glass: #f3f3f0;
+  --glass-2: #eaeae6;
+  --edge: rgba(20, 22, 28, 0.16);
+  --edge-soft: rgba(20, 22, 28, 0.08);
+  --text: #14161c;
+  --dim: #5c6472;
+  --steel: #98a1b0;
+  --purple: #8a18a8;
+  --green: #0c7a43;
+  --glow: rgba(138, 24, 168, 0.18);
 }
 
-main {
-  max-width: 1100px;
-  width: 95%;
+/* --- Numerals -------------------------------------------------------------
+   Every figure on this page is tabular. That is the whole reason the columns
+   line up, and the reason it reads as an instrument rather than a list. */
+.rec__idx,
+.rec__period,
+.axis__tick,
+.readout dd,
+.panel__email,
+.chrome__status,
+.setup__group {
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* --- Chrome --------------------------------------------------------------- */
+
+.chrome {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: clamp(0.75rem, 2vw, 2rem);
+  height: var(--bar-h);
+  padding: 0 var(--gutter);
+  background-color: var(--housing);
+  border-bottom: 1px solid var(--edge);
+}
+
+.chrome__mark {
+  font-family: var(--cond);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+
+.chrome__nav {
+  display: none;
+  gap: clamp(0.75rem, 1.6vw, 1.5rem);
+  margin-right: auto;
+}
+
+.chrome__link {
+  position: relative;
+  padding: 0.15rem 0;
+  font-family: var(--cond);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--dim);
+  transition: color 0.15s ease;
+}
+
+.chrome__link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background-color: var(--purple);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.chrome__link:hover,
+.chrome__link:focus-visible {
+  color: var(--text);
+}
+
+.chrome__link:hover::after,
+.chrome__link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+.chrome__status {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.chrome__btn {
+  display: inline-flex;
+  padding: 0.4rem;
+  font-size: 1.125rem;
+  color: var(--dim);
+  transition: color 0.15s ease;
+}
+
+.chrome__btn:hover,
+.chrome__btn:focus-visible {
+  color: var(--text);
+}
+
+.chrome__burger {
+  margin-left: auto;
+}
+
+@media (min-width: 56rem) {
+  .chrome__nav {
+    display: flex;
+  }
+
+  .chrome__status {
+    display: inline-flex;
+  }
+
+  .chrome__burger {
+    display: none;
+  }
+}
+
+@media (max-width: 55.999rem) {
+  .chrome__nav {
+    position: fixed;
+    inset: var(--bar-h) 0 auto 0;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem var(--gutter) 1.25rem;
+    background-color: var(--housing);
+    border-bottom: 1px solid var(--edge);
+  }
+
+  .chrome__nav.is-open {
+    display: flex;
+  }
+
+  .chrome__nav .chrome__link {
+    padding: 0.7rem 0;
+    font-size: 1.125rem;
+    border-bottom: 1px solid var(--edge-soft);
+  }
+}
+
+/* --- The live indicator ---------------------------------------------------
+   The only looping motion on the page, and it encodes real state. */
+.pulse {
+  position: relative;
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: var(--purple);
+}
+
+.pulse::after {
+  content: '';
+  position: absolute;
+  inset: -0.2rem;
+  border-radius: 50%;
+  border: 1px solid var(--purple);
+  animation: ping 2.4s cubic-bezier(0.22, 0.61, 0.36, 1) infinite;
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* --- Hero -----------------------------------------------------------------
+   A faint column rule grid, like the ruled glass of a display. */
+
+.hero {
+  position: relative;
+  padding: clamp(3.5rem, 9vw, 7.5rem) var(--gutter) clamp(3rem, 6vw, 5rem);
+  background-color: var(--glass);
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--edge-soft) 0 1px,
+    transparent 1px clamp(4rem, 8vw, 7rem)
+  );
+  border-bottom: 1px solid var(--edge);
+  overflow: hidden;
+}
+
+.hero__inner {
+  position: relative;
+  max-width: 78rem;
   margin: 0 auto;
 }
 
+.hero__name {
+  font-family: var(--cond);
+  font-size: clamp(3.25rem, 13vw, 9.5rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.88;
+}
+
+.hero__predicate {
+  max-width: 46ch;
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+  font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem 1.75rem;
+  margin-top: clamp(2rem, 4vw, 2.75rem);
+}
+
+.hero > * {
+  animation: rise 0.65s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.9rem);
+  }
+}
+
+/* --- Readout: label over value, hairline-separated ------------------------ */
+
+.readout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 1px;
+  margin-top: clamp(2.25rem, 4.5vw, 3.25rem);
+  background-color: var(--edge);
+  border: 1px solid var(--edge);
+}
+
+.readout__cell {
+  padding: 0.85rem 1rem;
+  background-color: var(--glass);
+}
+
+.readout dt {
+  font-family: var(--cond);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--dim);
+}
+
+.readout dd {
+  margin-top: 0.2rem;
+  font-size: 0.9375rem;
+  letter-spacing: -0.01em;
+}
+
+.readout__live {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* --- Sections and the table idiom ----------------------------------------- */
+
 .section {
-  margin-top: 5em;
+  padding: clamp(3rem, 6vw, 5.5rem) var(--gutter);
+  scroll-margin-top: var(--bar-h);
+  border-bottom: 1px solid var(--edge);
+}
+
+.section:nth-of-type(even) {
+  background-color: var(--glass-2);
+}
+
+.section__inner {
+  max-width: 68rem;
+  margin: 0 auto;
 }
 
 .section__title {
-  text-align: center;
-  margin-bottom: 1em;
-  text-transform: uppercase;
+  font-family: var(--cond);
+  font-size: clamp(1.625rem, 3vw, 2.375rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
 }
 
-.center {
+.table {
+  border-top: 1px solid var(--edge);
+}
+
+.table__head {
+  display: none;
+  gap: 1.5rem;
+  padding: 0.5rem 0 0.5rem 0.85rem;
+  border-left: 2px solid transparent;
+  font-family: var(--cond);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--dim);
+  border-bottom: 1px solid var(--edge);
+}
+
+/* --- Record rows ---------------------------------------------------------- */
+
+.rec,
+.proj {
+  display: grid;
+  grid-template-columns: var(--idx-w) minmax(0, 1fr);
+  gap: 0.35rem 1.5rem;
+  padding: clamp(1.1rem, 2.2vw, 1.5rem) 0 clamp(1.1rem, 2.2vw, 1.5rem) 0.85rem;
+  border-bottom: 1px solid var(--edge);
+  border-left: 2px solid transparent;
+  transition: background-color 0.18s ease, border-left-color 0.18s ease;
+}
+
+.rec:hover,
+.proj:hover,
+.proj:focus-within {
+  background-color: var(--glass-2);
+  border-left-color: var(--steel);
+}
+
+.app--dark .section:nth-of-type(even) .rec:hover,
+.app--dark .section:nth-of-type(even) .proj:hover {
+  background-color: var(--glass);
+}
+
+.rec.is-live {
+  border-left-color: var(--purple);
+}
+
+.rec__idx {
+  font-size: 0.8125rem;
+  color: var(--steel);
+}
+
+.rec.is-live .rec__idx {
+  color: var(--purple);
+}
+
+.rec__period {
+  font-size: 0.8125rem;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.rec__what,
+.rec__track,
+.proj__body {
+  grid-column: 1 / -1;
+}
+
+.rec__what {
+}
+
+.rec__title {
+  font-family: var(--cond);
+  font-size: clamp(1.125rem, 1.9vw, 1.4375rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.rec__where {
+  font-size: 0.9375rem;
+  color: var(--dim);
+}
+
+.rec__meta {
+  margin-left: 0.85rem;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8125rem;
+}
+
+.proj__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  margin-top: 0.8rem;
+}
+
+/* --- Tags: words with air, never chips ------------------------------------ */
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 1.1rem;
+  font-family: var(--cond);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--dim);
+}
+
+.tags--lead {
+  margin-top: 0.55rem;
+  color: var(--text);
+}
+
+.tags--lead + .tags {
+  margin-top: 0.1rem;
+  font-weight: 400;
+}
+
+/* --- The stint bars and their shared axis --------------------------------- */
+
+.axis {
+  position: relative;
+  display: block;
+  height: 1.1rem;
+}
+
+.axis__tick {
+  position: absolute;
+  top: 0;
+  font-size: 0.75rem;
+  color: var(--text);
+  opacity: 0.75;
+  transform: translateX(-50%);
+}
+
+.axis__tick[data-edge='start'] {
+  transform: none;
+}
+
+.axis__tick[data-edge='end'] {
+  transform: translateX(-100%);
+}
+
+.rec__track {
+  position: relative;
+  align-self: center;
+  height: 0.7rem;
+  margin-top: 0.5rem;
+  background-color: var(--edge-soft);
+  box-shadow: inset 0 0 0 1px var(--edge);
+}
+
+.rec__bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: var(--steel);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  transform-origin: left;
+  animation: draw 0.75s cubic-bezier(0.22, 0.61, 0.36, 1) backwards;
+  animation-delay: calc(0.28s + var(--i) * 0.09s);
+}
+
+.rec.is-live .rec__bar {
+  background-color: var(--purple);
+  box-shadow: 0 0 0 1px var(--glow), 0 0 14px var(--glow);
+}
+
+.rec__bar.is-point,
+.rec.is-live .rec__bar.is-point {
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--dim);
+}
+
+.rec.is-live .rec__bar.is-point {
+  box-shadow: inset 0 0 0 1.5px var(--purple);
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* --- Projects ------------------------------------------------------------- */
+
+.status {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+  font-family: var(--cond);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--dim);
+  white-space: nowrap;
+}
+
+.status__dot {
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: var(--green);
+}
+
+.status--running .status__dot {
+  background-color: var(--purple);
+  box-shadow: 0 0 10px var(--glow);
+}
+
+.proj__body {
+}
+
+.proj__name {
+  font-family: var(--cond);
+  font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.proj__desc {
+  max-width: 62ch;
+  margin-top: 0.3rem;
+  color: var(--dim);
+}
+
+/* --- Setup sheet ---------------------------------------------------------- */
+
+.setup {
+  border-top: 1px solid var(--edge);
+}
+
+.setup__row {
+  display: grid;
+  gap: 0.3rem 1.5rem;
+  padding: clamp(0.9rem, 1.8vw, 1.15rem) 0;
+  border-bottom: 1px solid var(--edge);
+}
+
+.setup__group {
+  font-size: 0.8125rem;
+  color: var(--dim);
+}
+
+.setup .tags--lead {
+  margin-top: 0;
+  font-size: 0.9375rem;
+  gap: 0.15rem 1.35rem;
+}
+
+/* --- Contact panel -------------------------------------------------------- */
+
+.panel {
+  padding: clamp(1.75rem, 4vw, 3rem);
+  background-color: var(--glass);
+  border: 1px solid var(--edge);
+  box-shadow: inset 3px 0 0 var(--purple);
+}
+
+.panel__title {
+  font-family: var(--cond);
+  font-size: clamp(1.5rem, 2.8vw, 2.125rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.panel__email {
+  display: inline-block;
+  margin-top: clamp(0.75rem, 2vw, 1.25rem);
+  font-size: clamp(1.125rem, 4.4vw, 3rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  word-break: break-word;
+  box-shadow: inset 0 -1px 0 var(--edge);
+  transition: box-shadow 0.18s ease, color 0.18s ease;
+}
+
+.panel__email:hover,
+.panel__email:focus-visible {
+  color: var(--purple);
+  box-shadow: inset 0 -2px 0 var(--purple);
+}
+
+.readout--panel {
+  margin-top: clamp(1.75rem, 3.5vw, 2.5rem);
+}
+
+.readout--panel .readout__cell {
+  background-color: var(--glass-2);
+}
+
+.readout--panel a:hover,
+.readout--panel a:focus-visible {
+  color: var(--purple);
+}
+
+/* --- Buttons and links ---------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.8em 1.5em;
+  font-family: var(--cond);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  background-color: var(--text);
+  color: var(--glass);
+  transition: background-color 0.18s ease, color 0.18s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background-color: var(--purple);
+  color: #fff;
 }
 
 .link {
-  color: var(--clr-primary);
-  padding: 0 0 0.3em 0;
-  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.15em;
+  font-family: var(--cond);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  box-shadow: inset 0 -1px 0 var(--edge);
+  transition: box-shadow 0.18s ease, color 0.18s ease;
 }
 
-.link:hover {
-  color: var(--clr-primary);
+.link:hover,
+.link:focus-visible {
+  color: var(--purple);
+  box-shadow: inset 0 -2px 0 var(--purple);
 }
 
-.link::before {
-  content: '';
-  display: inline;
-  width: 0%;
-  height: 0.2em;
-  position: absolute;
-  bottom: 0;
-  background-color: var(--clr-primary);
-  transition: width 0.2s ease-in;
+/* --- Footer and back to top ----------------------------------------------- */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding: 1.75rem var(--gutter) 4.25rem;
+  font-size: 0.875rem;
+  color: var(--dim);
+  background-color: var(--housing);
 }
 
-.link:hover::before,
-.link:focus::before {
-  width: 100%;
+.footer__links {
+  display: flex;
+  gap: 1.5rem;
 }
 
-.link--nav {
-  color: var(--clr-fg);
-  text-transform: lowercase;
-  font-weight: 500;
+.scroll-top {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 30;
+  display: inline-flex;
+  padding: 0.7rem;
+  font-size: 1.125rem;
+  color: var(--glass);
+  background-color: var(--text);
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
-.link--icon {
-  color: var(--clr-fg);
+.scroll-top:hover,
+.scroll-top:focus-visible {
+  background-color: var(--purple);
+  color: #fff;
 }
 
-.btn {
-  display: block;
-  cursor: pointer;
-  padding: 0.8em 1.4em;
-  font-weight: 500;
-  font-size: 0.9rem;
-  text-transform: lowercase;
-  transition: transform 0.2s ease-in-out;
+/* --- Focus ---------------------------------------------------------------- */
+
+:focus-visible {
+  outline: 2px solid var(--purple);
+  outline-offset: 3px;
 }
 
-.btn--outline {
-  color: var(--clr-primary);
-  border: 2px solid var(--clr-primary);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
+.btn:focus-visible,
+.scroll-top:focus-visible {
+  outline-color: var(--text);
 }
 
-.btn--outline:hover,
-.btn--outline:focus {
-  color: var(--clr-bg);
-}
+/* --- Wide layout: the columns line up -------------------------------------
+   Everything above is the single-column phone layout. The grid only appears
+   once there is room for the axis to mean anything. */
 
-.btn--outline:before {
-  content: '';
-  position: absolute;
-  background-color: var(--clr-primary);
-  right: 100%;
-  bottom: 0;
-  left: 0;
-  top: 0;
-  z-index: -1;
-  transition: right 0.2s ease-in-out;
-}
+@media (min-width: 56rem) {
+  .table__head {
+    display: grid;
+    gap: 1.5rem;
+  }
 
-.btn--outline:hover:before,
-.btn--outline:focus:before {
-  right: 0;
-}
+  #work .table__head,
+  #education .table__head,
+  .rec {
+    grid-template-columns:
+      var(--idx-w) var(--period-w) minmax(0, 1fr)
+      var(--track-w);
+    align-items: start;
+  }
 
-.btn--plain {
-  text-transform: initial;
-  background-color: var(--clr-bg-alt);
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 3px 3px 0px;
-  border: 0;
-}
+  #projects .table__head,
+  .proj {
+    grid-template-columns: var(--idx-w) var(--period-w) minmax(0, 1fr);
+    align-items: start;
+  }
 
-.btn--plain:hover {
-  transform: translateY(-4px);
-}
+  .rec__what,
+  .proj__body {
+    grid-column: auto;
+  }
 
-.btn--icon {
-  padding: 0;
-}
+  .rec__track {
+    grid-column: auto;
+    margin-top: 0.45rem;
+  }
 
-.btn--icon:hover,
-.btn--icon:focus {
-  color: var(--clr-primary);
-}
-
-.btn--icon:active {
-  transform: translateY(-5px);
-}
-
-@media (max-width: 600px) {
-  .section {
-    margin-top: 4em;
+  .setup__row {
+    grid-template-columns: 14rem minmax(0, 1fr);
+    align-items: baseline;
   }
 }
