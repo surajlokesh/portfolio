@@ -1,9 +1,0 @@
-.contact {
-  flex-direction: column;
-}
-
-.contact__info {
-  font-size: 1.2rem;
-  color: var(--clr-primary);
-  margin-top: 10px;
-}
